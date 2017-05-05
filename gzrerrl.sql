@@ -5,14 +5,17 @@
 -- AUDIT TRAIL: 8.8                      INIT    DATE
 -- 1. Create new table GZRERRL           ENB     09/20/2016
 --    Created to house errors recorded from locally developed apps.
+-- 2. Added default location values      ENB     05/05/2016
+--    Not all logging sources will necessarily have cause for defining an APPLICATION, PROCESS, and ACTION.
+--    This will allow for fall-through error logging of unhandled exceptions.
 -- AUDIT TRAIL END
 --
 DROP TABLE GZRERRL;
 CREATE TABLE GZRERRL
 (
-	GZRERRL_APPLICATION VARCHAR2(20) NOT NULL,
-	GZRERRL_PROCESS VARCHAR2(50) NOT NULL,
-	GZRERRL_ACTION VARCHAR2(20) NOT NULL,
+	GZRERRL_APPLICATION VARCHAR2(20) DEFAULT 'UNDEFINED' NOT NULL,
+	GZRERRL_PROCESS VARCHAR2(50) DEFAULT 'UNDEFINED' NOT NULL,
+	GZRERRL_ACTION VARCHAR2(20) DEFAULT 'UNDEFINED' NOT NULL,
 	GZRERRL_TIMESTAMP DATE DEFAULT SYSDATE NOT NULL,
 	GZRERRL_ERROR VARCHAR2(200) NOT NULL,
 	GZRERRL_MESSAGE VARCHAR2(4000),
