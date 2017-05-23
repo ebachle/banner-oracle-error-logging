@@ -12,21 +12,21 @@
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE BODY GZKERRL AS
-	--
-	-- FILE NAME..: gzkerr1.sql
-	-- RELEASE....: 8.8
-	-- OBJECT NAME: GZKERRL
-	-- PRODUCT....: ALBION
-	-- USAGE......: Package to support the Albion custom application error log.
-	-- COPYRIGHT..: Copyright 2016 Albion College.
-	--
-	-- DESCRIPTION:
-	--
-	-- This package provides a common interface to write to the Albion application
-	-- log table.  This will record information on a per-application basis
-	--
-	-- DESCRIPTION END
-
+--
+-- FILE NAME..: gzkerr1.sql
+-- RELEASE....: 8.8
+-- OBJECT NAME: GZKERRL
+-- PRODUCT....: ALBION
+-- USAGE......: Package to support the Albion custom application error log.
+-- COPYRIGHT..: Copyright 2016 Albion College.
+--
+-- DESCRIPTION:
+--
+-- This package provides a common interface to write to the Albion application
+-- log table.  This will record information on a per-application basis
+--
+-- DESCRIPTION END
+--
 
 	PROCEDURE P_WRITE_ERROR_LOG(
 		p_application gzrerrl.gzrerrl_application%TYPE,
