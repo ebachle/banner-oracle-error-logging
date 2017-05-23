@@ -27,13 +27,13 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
 --
 -- DESCRIPTION END
 --
-	PROCEDURE p_write_error_log(
-		p_application gzrerrl.gzrerrl_application%TYPE,
-		p_process gzrerrl.gzrerrl_process%TYPE,
-		p_action gzrerrl.gzrerrl_action%TYPE,
-		p_error gzrerrl.gzrerrl_error%TYPE,
-		p_message gzrerrl.gzrerrl_message%TYPE
-	);
+  PROCEDURE p_write_error_log(
+    p_application gzrerrl.gzrerrl_application%TYPE,
+    p_process gzrerrl.gzrerrl_process%TYPE,
+    p_action gzrerrl.gzrerrl_action%TYPE,
+    p_error gzrerrl.gzrerrl_error%TYPE,
+    p_message gzrerrl.gzrerrl_message%TYPE
+  );
 --
 END GZKERRL;
 /

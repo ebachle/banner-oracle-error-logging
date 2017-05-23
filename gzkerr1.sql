@@ -28,48 +28,48 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
 -- DESCRIPTION END
 --
 
-	PROCEDURE P_WRITE_ERROR_LOG(
-		p_application gzrerrl.gzrerrl_application%TYPE,
-		p_process gzrerrl.gzrerrl_process%TYPE,
-		p_action gzrerrl.gzrerrl_action%TYPE,
-		p_error gzrerrl.gzrerrl_error%TYPE,
-		p_message gzrerrl.gzrerrl_message%TYPE
-	) IS
-	PRAGMA AUTONOMOUS_TRANSACTION;
-	  v_user_id CONSTANT GZRERRL.GZRERRL_USER_ID%TYPE := GB_COMMON.F_SCT_USER();
-	  v_data_origin CONSTANT GZRERRL.GZRERRL_DATA_ORIGIN%TYPE := 'GZKERRL Error Logger';
-		BEGIN
-			INSERT INTO GZRERRL (
-				GZRERRL_APPLICATION
-				, GZRERRL_PROCESS
-				, GZRERRL_ACTION
-				, GZRERRL_TIMESTAMP
-				, GZRERRL_ERROR
-				, GZRERRL_MESSAGE
-				, GZRERRL_USER_ID
-				, GZRERRL_DATA_ORIGIN
-				, GZRERRL_ACTIVITY_DATE
-			)
-			VALUES (
-				p_application
-				, p_process
-				, p_action
-				, SYSDATE
-				, p_error
-				, p_message
-				, v_user_id
-				, v_data_origin
-				, SYSDATE
-			);
-			gb_common.P_COMMIT();
-			EXCEPTION
-			WHEN OTHERS THEN
-			DBMS_OUTPUT.PUT_LINE('Failed to insert into GZRERRL table.');
-			RAISE_APPLICATION_ERROR(
-				gb_common_strings.err_code,
-				gb_common.f_err_msg_add_delim('Failed to insert into GZRERRL table.')
-			);
-		END P_WRITE_ERROR_LOG;
+  PROCEDURE p_write_error_log(
+    p_application gzrerrl.gzrerrl_application%TYPE,
+    p_process gzrerrl.gzrerrl_process%TYPE,
+    p_action gzrerrl.gzrerrl_action%TYPE,
+    p_error gzrerrl.gzrerrl_error%TYPE,
+    p_message gzrerrl.gzrerrl_message%TYPE
+  ) IS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+    v_user_id CONSTANT GZRERRL.GZRERRL_USER_ID%TYPE := GB_COMMON.F_SCT_USER();
+    v_data_origin CONSTANT GZRERRL.GZRERRL_DATA_ORIGIN%TYPE := 'GZKERRL Error Logger';
+    BEGIN
+      INSERT INTO GZRERRL (
+        GZRERRL_APPLICATION
+        , GZRERRL_PROCESS
+        , GZRERRL_ACTION
+        , GZRERRL_TIMESTAMP
+        , GZRERRL_ERROR
+        , GZRERRL_MESSAGE
+        , GZRERRL_USER_ID
+        , GZRERRL_DATA_ORIGIN
+        , GZRERRL_ACTIVITY_DATE
+      )
+      VALUES (
+        p_application
+        , p_process
+        , p_action
+        , SYSDATE
+        , p_error
+        , p_message
+        , v_user_id
+        , v_data_origin
+        , SYSDATE
+      );
+      gb_common.P_COMMIT();
+      EXCEPTION
+      WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('Failed to insert into GZRERRL table.');
+      RAISE_APPLICATION_ERROR(
+        gb_common_strings.err_code,
+        'Failed to insert into GZRERRL table.'
+      );
+    END p_write_error_log;
 END GZKERRL;
 /
 SHOW ERRORS;
