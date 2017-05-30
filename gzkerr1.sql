@@ -27,6 +27,27 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
 --
 -- DESCRIPTION END
 --
+  FUNCTION f_get_log_application_context
+      RETURN VARCHAR2
+    IS
+    BEGIN
+      RETURN gb_common.f_get_context(C_PACKAGE, C_APPLICATION);
+    END f_get_log_application_context;
+--
+  FUNCTION f_get_log_process_context
+      RETURN VARCHAR2
+    IS
+    BEGIN
+      RETURN gb_common.f_get_context(C_PACKAGE, C_PROCESS);
+    END f_get_log_process_context;
+--
+  FUNCTION f_get_log_action_context
+      RETURN VARCHAR2
+    IS
+    BEGIN
+      RETURN gb_common.f_get_context(C_PACKAGE, C_ACTION);
+    END f_get_log_action_context;
+--
   PROCEDURE p_set_log_application_context(
     p_context VARCHAR2(4000)
   ) IS
