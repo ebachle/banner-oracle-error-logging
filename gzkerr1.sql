@@ -49,21 +49,21 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
     END f_get_log_action_context;
 --
   PROCEDURE p_set_log_application_context(
-    p_context VARCHAR2(4000)
+    p_context VARCHAR2
   ) IS
     BEGIN
       gb_common.p_set_context(C_PACKAGE, C_APPLICATION, p_context, 'N');
     END p_set_log_application_context;
 --
   PROCEDURE p_set_log_process_context(
-    p_context VARCHAR2(4000)
+    p_context VARCHAR2
   ) IS
     BEGIN
       gb_common.p_set_context(C_PACKAGE, C_PROCESS, p_context, 'N');
     END p_set_log_process_context;
 --
   PROCEDURE p_set_log_action_context(
-    p_context VARCHAR2(4000)
+    p_context VARCHAR2
   ) IS
     BEGIN
       gb_common.p_set_context(C_PACKAGE, C_ACTION, p_context, 'N');

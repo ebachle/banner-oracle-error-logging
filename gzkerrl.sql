@@ -48,15 +48,15 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
 -- Procedures
 --
   PROCEDURE p_set_log_application_context(
-    p_context VARCHAR2(100)
+    p_context VARCHAR2
   );
 --
   PROCEDURE p_set_log_process_context(
-    p_context VARCHAR2(100)
+    p_context VARCHAR2
   );
 --
   PROCEDURE p_set_log_action_context(
-    p_context VARCHAR2(100)
+    p_context VARCHAR2
   );
 --
   PROCEDURE p_write_error_log(
