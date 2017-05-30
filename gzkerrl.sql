@@ -62,7 +62,7 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
   PROCEDURE p_log_errors(
     p_error NUMBER,
     p_message VARCHAR2,
-    p_additional_info VARCHAR2
+    p_additional_info VARCHAR2 DEFAULT NULL
   );
 --
   PROCEDURE p_write_error_log(

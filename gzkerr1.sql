@@ -72,7 +72,7 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
   PROCEDURE p_log_errors(
     p_error NUMBER,
     p_message VARCHAR2,
-    p_additional_info VARCHAR2
+    p_additional_info VARCHAR2 DEFAULT NULL
   ) IS
     v_application gzrerrl.gzrerrl_application%TYPE;
     v_process gzrerrl.gzrerrl_process%TYPE;
