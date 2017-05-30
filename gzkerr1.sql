@@ -79,6 +79,7 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
     v_action gzrerrl.gzrerrl_action%TYPE;
     v_error gzrerrl.gzrerrl_error%TYPE;
     v_message gzrerrl.gzrerrl_message%TYPE;
+    v_additional_info VARCHAR2(200);
 --
     error_table gb_common.msgtab;
 --
@@ -108,7 +109,11 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       FOR i IN error_table.FIRST .. error_table.LAST
       LOOP
         v_error := p_error;
-        v_message := substr(error_table(i), 3800) || ' - ' || p_additional_info;
+        IF p_additional_info IS NOT NULL
+          THEN v_additional_info := ' - ' || p_additional_info;
+          ELSE v_additional_info := p_additional_info;
+        END IF;
+        v_message := error_table(i) || v_additional_info;
         p_write_error_log(
           p_application => v_application,
           p_process => v_process,
