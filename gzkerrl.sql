@@ -60,8 +60,8 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
   );
 --
   PROCEDURE p_log_errors(
-    p_sql_error SQLCODE%TYPE,
-    p_sql_message SQLERRM%TYPE,
+    p_sql_error NUMBER,
+    p_sql_message VARCHAR2,
     p_additional_info VARCHAR2
   );
 --

@@ -70,8 +70,8 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
     END p_set_log_action_context;
 --
   PROCEDURE p_log_errors(
-    p_sql_error SQLCODE%TYPE,
-    p_sql_message SQLERRM%TYPE,
+    p_sql_error NUMBER,
+    p_sql_message VARCHAR2,
     p_additional_info VARCHAR2
   ) IS
     v_application gzrerrl.gzrerrl_application%TYPE;
