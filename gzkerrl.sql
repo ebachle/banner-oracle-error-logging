@@ -59,6 +59,12 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
     p_context VARCHAR2
   );
 --
+  PROCEDURE p_log_errors(
+    p_sql_error SQLCODE%TYPE,
+    p_sql_message SQLERRM%TYPE,
+    p_additional_info VARCHAR2
+  );
+--
   PROCEDURE p_write_error_log(
     p_application gzrerrl.gzrerrl_application%TYPE,
     p_process gzrerrl.gzrerrl_process%TYPE,

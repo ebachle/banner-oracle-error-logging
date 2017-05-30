@@ -69,7 +69,56 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       gb_common.p_set_context(C_PACKAGE, C_ACTION, p_context, 'N');
     END p_set_log_action_context;
 --
-
+  PROCEDURE p_log_errors(
+    p_sql_error SQLCODE%TYPE,
+    p_sql_message SQLERRM%TYPE,
+    p_additional_info VARCHAR2
+  ) IS
+    v_application gzrerrl.gzrerrl_application%TYPE;
+    v_process gzrerrl.gzrerrl_process%TYPE;
+    v_action gzrerrl.gzrerrl_action%TYPE;
+    v_error gzrerrl.gzrerrl_error%TYPE;
+    v_message gzrerrl.gzrerrl_message%TYPE;
+--
+    error_table gb_common.msgtab;
+--
+    BEGIN
+--
+-- Get logging context from global GB_COMMON context.
+--
+      v_application := f_get_log_application_context();
+      v_process := f_get_log_process_context();
+      v_action := f_get_log_action_context();
+--
+-- Build error table from Banner common error handling.
+--
+      error_table := gb_common.F_ERR_MSG_REMOVE_DELIM_TBL(p_sql_message);
+--
+-- Error checking for empty collection of errors
+--
+      IF error_table IS NULL
+      THEN
+        RAISE_APPLICATION_ERROR(gb_common_strings.err_code, 'No error table generated from incoming error message.', TRUE);
+      END IF;
+      IF error_table.COUNT = 0
+      THEN
+        RAISE_APPLICATION_ERROR(gb_common_strings.err_code, 'Empty error table generated from incoming error message.', TRUE);
+      END IF;
+--
+      FOR i IN error_table.FIRST .. error_table.LAST
+      LOOP
+        v_error := p_sql_error;
+        v_message := substr(error_table(i), 3800) || ' - ' || p_additional_info;
+        p_write_error_log(
+          p_application => v_application,
+          p_process => v_process,
+          p_action => v_action,
+          p_error => v_error,
+          p_message => v_message
+        );
+      END LOOP;
+    END p_log_errors;
+--
   PROCEDURE p_write_error_log(
     p_application gzrerrl.gzrerrl_application%TYPE,
     p_process gzrerrl.gzrerrl_process%TYPE,
