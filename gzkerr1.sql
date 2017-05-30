@@ -70,8 +70,8 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
     END p_set_log_action_context;
 --
   PROCEDURE p_log_errors(
-    p_sql_error NUMBER,
-    p_sql_message VARCHAR2,
+    p_error NUMBER,
+    p_message VARCHAR2,
     p_additional_info VARCHAR2
   ) IS
     v_application gzrerrl.gzrerrl_application%TYPE;
@@ -92,7 +92,7 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
 --
 -- Build error table from Banner common error handling.
 --
-      error_table := gb_common.F_ERR_MSG_REMOVE_DELIM_TBL(p_sql_message);
+      error_table := gb_common.F_ERR_MSG_REMOVE_DELIM_TBL(p_message);
 --
 -- Error checking for empty collection of errors
 --
@@ -107,7 +107,7 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
 --
       FOR i IN error_table.FIRST .. error_table.LAST
       LOOP
-        v_error := p_sql_error;
+        v_error := p_error;
         v_message := substr(error_table(i), 3800) || ' - ' || p_additional_info;
         p_write_error_log(
           p_application => v_application,
