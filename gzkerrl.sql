@@ -34,6 +34,20 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
   C_PROCESS            CONSTANT VARCHAR2(100) := 'PROCESS';
   C_ACTION             CONSTANT VARCHAR2(100) := 'ACTION';
 --
+-- Procedures
+--
+  PROCEDURE p_set_log_application_context(
+    p_context VARCHAR2(100)
+  );
+--
+  PROCEDURE p_set_log_process_context(
+    p_context VARCHAR2(100)
+  );
+--
+  PROCEDURE p_set_log_action_context(
+    p_context VARCHAR2(100)
+  );
+--
   PROCEDURE p_write_error_log(
     p_application gzrerrl.gzrerrl_application%TYPE,
     p_process gzrerrl.gzrerrl_process%TYPE,
