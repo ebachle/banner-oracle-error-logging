@@ -27,6 +27,13 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
 --
 -- DESCRIPTION END
 --
+-- Constants
+--
+  C_PACKAGE            CONSTANT VARCHAR2(100) := 'GZKERRL_ERROR_LOGGER';
+  C_APPLICATION        CONSTANT VARCHAR2(100) := 'APPLICATION';
+  C_PROCESS            CONSTANT VARCHAR2(100) := 'PROCESS';
+  C_ACTION             CONSTANT VARCHAR2(100) := 'ACTION';
+--
   PROCEDURE p_write_error_log(
     p_application gzrerrl.gzrerrl_application%TYPE,
     p_process gzrerrl.gzrerrl_process%TYPE,
