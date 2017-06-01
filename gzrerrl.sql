@@ -8,6 +8,8 @@
 -- 2. Added default location values      ENB     05/05/2016
 --    Not all logging sources will necessarily have cause for defining an APPLICATION, PROCESS, and ACTION.
 --    This will allow for fall-through error logging of unhandled exceptions.
+-- 3. Converted field type to INTEGER    ENB     06/01/2017
+--    Converted gzrerrl_error type to integer to match SQLCODE return type.
 -- AUDIT TRAIL END
 --
 DROP TABLE GZRERRL;
@@ -17,7 +19,7 @@ CREATE TABLE GZRERRL
 	GZRERRL_PROCESS VARCHAR2(50) DEFAULT 'UNDEFINED' NOT NULL,
 	GZRERRL_ACTION VARCHAR2(20) DEFAULT 'UNDEFINED' NOT NULL,
 	GZRERRL_TIMESTAMP DATE DEFAULT SYSDATE NOT NULL,
-	GZRERRL_ERROR VARCHAR2(200) NOT NULL,
+	GZRERRL_ERROR INTEGER NOT NULL,
 	GZRERRL_MESSAGE VARCHAR2(4000),
 	GZRERRL_STATUS VARCHAR2(20) DEFAULT 'NEW' NOT NULL
 	/* Will be added by DBEU calls further down the script */

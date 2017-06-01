@@ -60,7 +60,7 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
   );
 --
   PROCEDURE p_log_errors(
-    p_error NUMBER,
+    p_error gzrerrl.gzrerrl_error%TYPE DEFAULT SQLCODE,
     p_message VARCHAR2,
     p_additional_info VARCHAR2 DEFAULT NULL
   );
