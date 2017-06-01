@@ -21,6 +21,7 @@
 --    Fixed issue with inserting NULL explicitly in p_write_error_log call.
 --    Though underlying table has a default value, this only works if the column is not called explicitly.
 --    Added a default value on the function to assist with that.
+--    Added NVL logic to the calls to f_get_*_context.  This will get a 'UNDEFINED' value for the INSERT.
 -- 5. ENB 6/1/2017
 --    Altered default types of logging context setters.
 --    This should prevent strings of an unacceptable length from being set.
@@ -104,9 +105,9 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
 --
 -- Get logging context from global GB_COMMON context.
 --
-      v_application := f_get_log_application_context();
-      v_process := f_get_log_process_context();
-      v_action := f_get_log_action_context();
+      v_application := NVL(f_get_log_application_context(), 'UNDEFINED');
+      v_process := NVL(f_get_log_process_context(), 'UNDEFINED');
+      v_action := NVL(f_get_log_action_context(), 'UNDEFINED');
 --
 -- Build error table from Banner common error handling.
 --
