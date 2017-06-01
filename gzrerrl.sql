@@ -5,7 +5,7 @@
 -- AUDIT TRAIL: 8.8                      INIT    DATE
 -- 1. Create new table GZRERRL           ENB     09/20/2016
 --    Created to house errors recorded from locally developed apps.
--- 2. Added default location values      ENB     05/05/2016
+-- 2. Added default location values      ENB     05/05/2017
 --    Not all logging sources will necessarily have cause for defining an APPLICATION, PROCESS, and ACTION.
 --    This will allow for fall-through error logging of unhandled exceptions.
 -- 3. Converted field type to INTEGER    ENB     06/01/2017
