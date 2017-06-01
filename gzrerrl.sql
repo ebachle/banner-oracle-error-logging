@@ -13,14 +13,18 @@
 -- 4. Added additional fields.           ENB     06/01/2017
 --    Field was added for trace to be filled by DBMS_UTILITY.FORMAT_FORMAT_ERROR_BACKTRACE();
 --    Field was added for logging additional info to give context to what record threw the error in ETL usually.
+-- 5. Extended fields                    ENB     06/01/2017
+--    Extended application and action fields just for sanity.
+--    Could be smaller, but overall, they may have cause to get that large given all the uses this may see.
+--    Additional error handling will be added to the GZKERRL package to clarify when these limits are exceeded.
 -- AUDIT TRAIL END
 --
 DROP TABLE GZRERRL;
 CREATE TABLE GZRERRL
 (
-	GZRERRL_APPLICATION VARCHAR2(20) DEFAULT 'UNDEFINED' NOT NULL,
+	GZRERRL_APPLICATION VARCHAR2(50) DEFAULT 'UNDEFINED' NOT NULL,
 	GZRERRL_PROCESS VARCHAR2(50) DEFAULT 'UNDEFINED' NOT NULL,
-	GZRERRL_ACTION VARCHAR2(20) DEFAULT 'UNDEFINED' NOT NULL,
+	GZRERRL_ACTION VARCHAR2(50) DEFAULT 'UNDEFINED' NOT NULL,
 	GZRERRL_TIMESTAMP DATE DEFAULT SYSDATE NOT NULL,
 	GZRERRL_ERROR INTEGER NOT NULL,
 	GZRERRL_MESSAGE VARCHAR2(4000),
