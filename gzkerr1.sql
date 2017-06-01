@@ -14,6 +14,9 @@
 --    Added additional columns to house additional info and traces.
 --    Added functions and procedures to get and set logging conext.
 --    Added defaults to assist with pulling in logs without many inputs (or any possibly).
+-- 3. ENB 6/1/2017
+--    Added additional handling of errors inserting into table.
+--    Will not output underlying ORA- SQL error and message.
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE BODY GZKERRL AS
@@ -176,7 +179,7 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       DBMS_OUTPUT.PUT_LINE('Failed to insert into GZRERRL table.');
       RAISE_APPLICATION_ERROR(
         gb_common_strings.err_code,
-        'Failed to insert into GZRERRL table.'
+        'Failed to insert into GZRERRL table.' || SQLCODE || ' - ' || SQLERRM
       );
     END p_write_error_log;
 END GZKERRL;
