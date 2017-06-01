@@ -71,7 +71,9 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
     p_process gzrerrl.gzrerrl_process%TYPE,
     p_action gzrerrl.gzrerrl_action%TYPE,
     p_error gzrerrl.gzrerrl_error%TYPE,
-    p_message gzrerrl.gzrerrl_message%TYPE
+    p_message gzrerrl.gzrerrl_message%TYPE,
+    p_trace gzrerrl.gzrerrl_trace%TYPE,
+    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE
   );
 --
 END GZKERRL;
