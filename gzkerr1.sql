@@ -71,15 +71,17 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
 --
   PROCEDURE p_log_errors(
     p_error gzrerrl.gzrerrl_error%TYPE DEFAULT SQLCODE,
-    p_message VARCHAR2,
-    p_additional_info VARCHAR2 DEFAULT NULL
+    p_message gzrerrl.gzrerrl_message%TYPE DEFAULT DBMS_UTILITY.FORMAT_ERROR_STACK,
+    p_trace gzrerrl.gzrerrl_trace%TYPE DEFAULT DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
+    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE DEFAULT NULL
   ) IS
     v_application gzrerrl.gzrerrl_application%TYPE;
     v_process gzrerrl.gzrerrl_process%TYPE;
     v_action gzrerrl.gzrerrl_action%TYPE;
     v_error gzrerrl.gzrerrl_error%TYPE;
     v_message gzrerrl.gzrerrl_message%TYPE;
-    v_additional_info VARCHAR2(200);
+    v_trace gzrerrl.gzrerrl_trace%TYPE;
+    v_additional_info gzrerrl.gzrerrl_additional_info%TYPE;
 --
     error_table gb_common.msgtab;
 --
@@ -109,17 +111,17 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       FOR i IN error_table.FIRST .. error_table.LAST
       LOOP
         v_error := p_error;
-        IF p_additional_info IS NOT NULL
-          THEN v_additional_info := ' - ' || p_additional_info;
-          ELSE v_additional_info := p_additional_info;
-        END IF;
-        v_message := error_table(i) || v_additional_info;
+        v_message := error_table(i);
+        v_trace := p_trace;
+        v_additional_info := p_additional_info;
         p_write_error_log(
           p_application => v_application,
           p_process => v_process,
           p_action => v_action,
           p_error => v_error,
-          p_message => v_message
+          p_message => v_message,
+          p_trace => v_trace,
+          p_additional_info => v_additional_info
         );
       END LOOP;
     END p_log_errors;
@@ -129,7 +131,9 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
     p_process gzrerrl.gzrerrl_process%TYPE,
     p_action gzrerrl.gzrerrl_action%TYPE,
     p_error gzrerrl.gzrerrl_error%TYPE,
-    p_message gzrerrl.gzrerrl_message%TYPE
+    p_message gzrerrl.gzrerrl_message%TYPE,
+    p_trace gzrerrl.gzrerrl_trace%TYPE,
+    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE
   ) IS
   PRAGMA AUTONOMOUS_TRANSACTION;
     v_user_id CONSTANT GZRERRL.GZRERRL_USER_ID%TYPE := GB_COMMON.F_SCT_USER();
@@ -142,6 +146,8 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
         , GZRERRL_TIMESTAMP
         , GZRERRL_ERROR
         , GZRERRL_MESSAGE
+        , GZRERRL_TRACE
+        , GZRERRL_ADDITIONAL_INFO
         , GZRERRL_USER_ID
         , GZRERRL_DATA_ORIGIN
         , GZRERRL_ACTIVITY_DATE
@@ -153,6 +159,8 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
         , SYSDATE
         , p_error
         , p_message
+        , p_trace
+        , p_additional_info
         , v_user_id
         , v_data_origin
         , SYSDATE

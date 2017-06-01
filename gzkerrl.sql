@@ -61,8 +61,9 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
 --
   PROCEDURE p_log_errors(
     p_error gzrerrl.gzrerrl_error%TYPE DEFAULT SQLCODE,
-    p_message VARCHAR2,
-    p_additional_info VARCHAR2 DEFAULT NULL
+    p_message gzrerrl.gzrerrl_message%TYPE DEFAULT DBMS_UTILITY.FORMAT_ERROR_STACK,
+    p_trace gzrerrl.gzrerrl_trace%TYPE DEFAULT DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
+    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE DEFAULT NULL
   );
 --
   PROCEDURE p_write_error_log(

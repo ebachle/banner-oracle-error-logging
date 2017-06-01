@@ -10,6 +10,9 @@
 --    This will allow for fall-through error logging of unhandled exceptions.
 -- 3. Converted field type to INTEGER    ENB     06/01/2017
 --    Converted gzrerrl_error type to integer to match SQLCODE return type.
+-- 4. Added additional fields.           ENB     06/01/2017
+--    Field was added for trace to be filled by DBMS_UTILITY.FORMAT_FORMAT_ERROR_BACKTRACE();
+--    Field was added for logging additional info to give context to what record threw the error in ETL usually.
 -- AUDIT TRAIL END
 --
 DROP TABLE GZRERRL;
@@ -21,6 +24,8 @@ CREATE TABLE GZRERRL
 	GZRERRL_TIMESTAMP DATE DEFAULT SYSDATE NOT NULL,
 	GZRERRL_ERROR INTEGER NOT NULL,
 	GZRERRL_MESSAGE VARCHAR2(4000),
+	GZRERRL_TRACE VARCHAR2(4000),
+	GZRERRL_ADDITIONAL_INFO VARCHAR2(4000),
 	GZRERRL_STATUS VARCHAR2(20) DEFAULT 'NEW' NOT NULL
 	/* Will be added by DBEU calls further down the script */
 	-- 	GZRERRL_SURROGATE_ID NUMBER(19),
