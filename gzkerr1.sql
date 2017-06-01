@@ -17,6 +17,10 @@
 -- 3. ENB 6/1/2017
 --    Added additional handling of errors inserting into table.
 --    Will not output underlying ORA- SQL error and message.
+-- 4. ENB 6/1/2017
+--    Fixed issue with inserting NULL explicitly in p_write_error_log call.
+--    Though underlying table has a default value, this only works if the column is not called explicitly.
+--    Added a default value on the function to assist with that.
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE BODY GZKERRL AS
@@ -135,9 +139,9 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
     END p_log_errors;
 --
   PROCEDURE p_write_error_log(
-    p_application gzrerrl.gzrerrl_application%TYPE,
-    p_process gzrerrl.gzrerrl_process%TYPE,
-    p_action gzrerrl.gzrerrl_action%TYPE,
+    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT 'UNDEFINED',
+    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT 'UNDEFINED',
+    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT 'UNDEFINED',
     p_error gzrerrl.gzrerrl_error%TYPE,
     p_message gzrerrl.gzrerrl_message%TYPE,
     p_trace gzrerrl.gzrerrl_trace%TYPE,

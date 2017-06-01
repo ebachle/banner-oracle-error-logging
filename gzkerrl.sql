@@ -14,6 +14,8 @@
 --    Added additional columns to house additional info and traces.
 --    Added functions and procedures to get and set logging conext.
 --    Added defaults to assist with pulling in logs without many inputs (or any possibly).
+-- 3. ENB 6/1/2017
+--    Added default values to p_write_error_log spec.
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE GZKERRL AS
@@ -72,9 +74,9 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
   );
 --
   PROCEDURE p_write_error_log(
-    p_application gzrerrl.gzrerrl_application%TYPE,
-    p_process gzrerrl.gzrerrl_process%TYPE,
-    p_action gzrerrl.gzrerrl_action%TYPE,
+    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT ''UNDEFINED'',
+    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT ''UNDEFINED'',
+    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT ''UNDEFINED'',
     p_error gzrerrl.gzrerrl_error%TYPE,
     p_message gzrerrl.gzrerrl_message%TYPE,
     p_trace gzrerrl.gzrerrl_trace%TYPE,
