@@ -9,6 +9,11 @@
 -- 1. ENB 9/20/2016
 --    Initial creation of package to write errors to Albion error logging table.
 --    Delivered to support ETL load processes.
+-- 2. ENB 6/1/2017
+--    Updated with additional functions to simplify logging multiple errors.
+--    Added additional columns to house additional info and traces.
+--    Added functions and procedures to get and set logging conext.
+--    Added defaults to assist with pulling in logs without many inputs (or any possibly).
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE BODY GZKERRL AS
