@@ -16,6 +16,9 @@
 --    Added defaults to assist with pulling in logs without many inputs (or any possibly).
 -- 3. ENB 6/1/2017
 --    Added default values to p_write_error_log spec.
+-- 4. ENB 6/1/2017
+--    Altered default types of logging context setters.
+--    This should prevent strings of an unacceptable length from being set.
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE GZKERRL AS
@@ -55,15 +58,15 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
 -- Procedures
 --
   PROCEDURE p_set_log_application_context(
-    p_context VARCHAR2
+    p_context gzrerrl.gzrerrl_application%TYPE
   );
 --
   PROCEDURE p_set_log_process_context(
-    p_context VARCHAR2
+    p_context gzrerrl.gzrerrl_process%TYPE
   );
 --
   PROCEDURE p_set_log_action_context(
-    p_context VARCHAR2
+    p_context gzrerrl.gzrerrl_action%TYPE
   );
 --
   PROCEDURE p_log_errors(
@@ -74,9 +77,9 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
   );
 --
   PROCEDURE p_write_error_log(
-    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT ''UNDEFINED'',
-    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT ''UNDEFINED'',
-    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT ''UNDEFINED'',
+    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT 'UNDEFINED',
+    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT 'UNDEFINED',
+    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT 'UNDEFINED',
     p_error gzrerrl.gzrerrl_error%TYPE,
     p_message gzrerrl.gzrerrl_message%TYPE,
     p_trace gzrerrl.gzrerrl_trace%TYPE,

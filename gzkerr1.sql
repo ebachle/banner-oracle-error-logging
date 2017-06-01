@@ -21,6 +21,9 @@
 --    Fixed issue with inserting NULL explicitly in p_write_error_log call.
 --    Though underlying table has a default value, this only works if the column is not called explicitly.
 --    Added a default value on the function to assist with that.
+-- 5. ENB 6/1/2017
+--    Altered default types of logging context setters.
+--    This should prevent strings of an unacceptable length from being set.
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE BODY GZKERRL AS
@@ -61,21 +64,21 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
     END f_get_log_action_context;
 --
   PROCEDURE p_set_log_application_context(
-    p_context VARCHAR2
+    p_context gzrerrl.gzrerrl_application%TYPE
   ) IS
     BEGIN
       gb_common.p_set_context(C_PACKAGE, C_APPLICATION, p_context, 'N');
     END p_set_log_application_context;
 --
   PROCEDURE p_set_log_process_context(
-    p_context VARCHAR2
+    p_context gzrerrl.gzrerrl_process%TYPE
   ) IS
     BEGIN
       gb_common.p_set_context(C_PACKAGE, C_PROCESS, p_context, 'N');
     END p_set_log_process_context;
 --
   PROCEDURE p_set_log_action_context(
-    p_context VARCHAR2
+    p_context gzrerrl.gzrerrl_action%TYPE
   ) IS
     BEGIN
       gb_common.p_set_context(C_PACKAGE, C_ACTION, p_context, 'N');
