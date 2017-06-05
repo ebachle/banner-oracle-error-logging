@@ -9,30 +9,83 @@
 -- 1. ENB 9/20/2016
 --    Initial creation of package to write errors to Albion error logging table.
 --    Delivered to support ETL load processes.
+-- 2. ENB 6/1/2017
+--    Updated with additional functions to simplify logging multiple errors.
+--    Added additional columns to house additional info and traces.
+--    Added functions and procedures to get and set logging conext.
+--    Added defaults to assist with pulling in logs without many inputs (or any possibly).
+-- 3. ENB 6/1/2017
+--    Added default values to p_write_error_log spec.
+-- 4. ENB 6/1/2017
+--    Altered default types of logging context setters.
+--    This should prevent strings of an unacceptable length from being set.
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE GZKERRL AS
-	--
-	-- FILE NAME..: gzkerrl.sql
-	-- RELEASE....: 8.8
-	-- OBJECT NAME: GZKERRL
-	-- PRODUCT....: ALBION
-	-- USAGE......: Package to support the Albion custom application error log.
-	-- COPYRIGHT..: Copyright 2016 Albion College.
-	--
-	-- DESCRIPTION:
-	--
-	-- This package provides a common interface to write to the Albion application
-	-- log table.  This will record information on a per-application basis
-	--
-	-- DESCRIPTION END
-	PROCEDURE P_WRITE_ERROR_LOG(
-		p_application gzrerrl.gzrerrl_application%TYPE,
-		p_process gzrerrl.gzrerrl_process%TYPE,
-		p_action gzrerrl.gzrerrl_action%TYPE,
-		p_error gzrerrl.gzrerrl_error%TYPE,
-		p_message gzrerrl.gzrerrl_message%TYPE
-	);
+--
+-- FILE NAME..: gzkerrl.sql
+-- RELEASE....: 8.8
+-- OBJECT NAME: GZKERRL
+-- PRODUCT....: ALBION
+-- USAGE......: Package to support the Albion custom application error log.
+-- COPYRIGHT..: Copyright 2016 Albion College.
+--
+-- DESCRIPTION:
+--
+-- This package provides a common interface to write to the Albion application
+-- log table.  This will record information on a per-application basis
+--
+-- DESCRIPTION END
+--
+-- Constants
+--
+  C_PACKAGE            CONSTANT VARCHAR2(100) := 'GZKERRL_ERROR_LOGGER';
+  C_APPLICATION        CONSTANT VARCHAR2(100) := 'APPLICATION';
+  C_PROCESS            CONSTANT VARCHAR2(100) := 'PROCESS';
+  C_ACTION             CONSTANT VARCHAR2(100) := 'ACTION';
+--
+-- Functions
+--
+  FUNCTION f_get_log_application_context
+    RETURN VARCHAR2;
+--
+  FUNCTION f_get_log_process_context
+    RETURN VARCHAR2;
+--
+  FUNCTION f_get_log_action_context
+    RETURN VARCHAR2;
+--
+-- Procedures
+--
+  PROCEDURE p_set_log_application_context(
+    p_context gzrerrl.gzrerrl_application%TYPE
+  );
+--
+  PROCEDURE p_set_log_process_context(
+    p_context gzrerrl.gzrerrl_process%TYPE
+  );
+--
+  PROCEDURE p_set_log_action_context(
+    p_context gzrerrl.gzrerrl_action%TYPE
+  );
+--
+  PROCEDURE p_log_errors(
+    p_error gzrerrl.gzrerrl_error%TYPE DEFAULT SQLCODE,
+    p_message gzrerrl.gzrerrl_message%TYPE DEFAULT DBMS_UTILITY.FORMAT_ERROR_STACK,
+    p_trace gzrerrl.gzrerrl_trace%TYPE DEFAULT DBMS_UTILITY.FORMAT_ERROR_BACKTRACE,
+    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE DEFAULT NULL
+  );
+--
+  PROCEDURE p_write_error_log(
+    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT 'UNDEFINED',
+    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT 'UNDEFINED',
+    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT 'UNDEFINED',
+    p_error gzrerrl.gzrerrl_error%TYPE,
+    p_message gzrerrl.gzrerrl_message%TYPE,
+    p_trace gzrerrl.gzrerrl_trace%TYPE,
+    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE
+  );
+--
 END GZKERRL;
 /
 SHOW ERRORS;
