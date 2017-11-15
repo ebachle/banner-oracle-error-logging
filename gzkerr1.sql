@@ -191,6 +191,22 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       );
     END p_write_error_log;
 --
+  PROCEDURE p_update_status(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_status gzrerrl.gzrerrl_status%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
+  )
+  IS
+    BEGIN
+      UPDATE GZRERRL
+      SET
+        GZRERRL_STATUS = p_status,
+        GZRERRL_USER_ID = p_user_id,
+        GZRERRL_ACTIVITY_DATE = SYSDATE
+      WHERE
+        GZRERRL_SURROGATE_ID = p_id;
+    END p_update_status;
+--
   PROCEDURE p_mark_new(
     p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
     p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
@@ -235,22 +251,6 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
         p_user_id => p_user_id
       );
     END p_mark_resolved;
---
-  PROCEDURE p_update_status(
-    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
-    p_status gzrerrl.gzrerrl_status%TYPE,
-    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
-  )
-  IS
-    BEGIN
-      UPDATE GZRERRL
-      SET
-        GZRERRL_STATUS = p_status,
-        GZRERRL_USER_ID = p_user_id,
-        GZRERRL_ACTIVITY_DATE = SYSDATE
-      WHERE
-        GZRERRL_SURROGATE_ID = p_id;
-    END p_update_status;
 --
 END GZKERRL;
 /
