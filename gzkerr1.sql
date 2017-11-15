@@ -197,7 +197,7 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
   )
   IS
     v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_NEW;
-
+--
     BEGIN
       p_update_status(
         p_id => p_id,
@@ -212,7 +212,7 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
   )
   IS
     v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_ACKNOWLEDGED;
-
+--
     BEGIN
       p_update_status(
         p_id => p_id,
@@ -227,7 +227,7 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
   )
   IS
     v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_RESOLVED;
-
+--
     BEGIN
       p_update_status(
         p_id => p_id,
