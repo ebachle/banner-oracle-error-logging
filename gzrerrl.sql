@@ -17,6 +17,11 @@
 --    Extended application and action fields just for sanity.
 --    Could be smaller, but overall, they may have cause to get that large given all the uses this may see.
 --    Additional error handling will be added to the GZKERRL package to clarify when these limits are exceeded.
+--
+-- AUDIT TRAIL: 8.9.3
+-- 1. ENB 11/15/2017
+--    Added column comments.
+--
 -- AUDIT TRAIL END
 --
 DROP TABLE GZRERRL;
