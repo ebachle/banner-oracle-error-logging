@@ -44,6 +44,10 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
   C_PROCESS            CONSTANT VARCHAR2(100) := 'PROCESS';
   C_ACTION             CONSTANT VARCHAR2(100) := 'ACTION';
 --
+  C_STATUS_NEW CONSTANT gzrerrl.gzrerrl_status%TYPE := 'NEW';
+  C_STATUS_ACKNOWLEDGED CONSTANT gzrerrl.gzrerrl_status%TYPE := 'ACKNOWLEDGED';
+  C_STATUS_RESOLVED CONSTANT gzrerrl.gzrerrl_status%TYPE := 'RESOLVED';
+--
 -- Functions
 --
   FUNCTION f_get_log_application_context
