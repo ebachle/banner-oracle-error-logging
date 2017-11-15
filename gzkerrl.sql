@@ -80,16 +80,6 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
     p_additional_info gzrerrl.gzrerrl_additional_info%TYPE DEFAULT NULL
   );
 --
-  PROCEDURE p_write_error_log(
-    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT 'UNDEFINED',
-    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT 'UNDEFINED',
-    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT 'UNDEFINED',
-    p_error gzrerrl.gzrerrl_error%TYPE,
-    p_message gzrerrl.gzrerrl_message%TYPE,
-    p_trace gzrerrl.gzrerrl_trace%TYPE,
-    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE
-  );
---
   PROCEDURE p_mark_new(
     p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
     p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
