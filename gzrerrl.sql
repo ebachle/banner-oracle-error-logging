@@ -17,6 +17,11 @@
 --    Extended application and action fields just for sanity.
 --    Could be smaller, but overall, they may have cause to get that large given all the uses this may see.
 --    Additional error handling will be added to the GZKERRL package to clarify when these limits are exceeded.
+--
+-- AUDIT TRAIL: 8.9.3
+-- 1. ENB 11/15/2017
+--    Added column comments.
+--
 -- AUDIT TRAIL END
 --
 DROP TABLE GZRERRL;
@@ -46,7 +51,28 @@ CREATE INDEX GZRERRL_ERROR_index
 	ON GZRERRL (GZRERRL_ERROR);
 CREATE INDEX GZRERRL_STATUS_index
 	ON GZRERRL (GZRERRL_STATUS);
-COMMENT ON TABLE GZRERRL IS 'Error Logging Table for Albion processes';
+--
+COMMENT ON TABLE GZRERRL IS
+'Error Logging Table for Albion processes';
+COMMENT ON COLUMN GZRERRL.GZRERRL_APPLICATION IS
+'Application is the top-level package being logged';
+COMMENT ON COLUMN GZRERRL.GZRERRL_PROCESS IS
+'Process is the function of the application being logged';
+COMMENT ON COLUMN GZRERRL.GZRERRL_ACTION IS
+'Action is the specific act being performed (usually a CRUD behavior) being logged';
+COMMENT ON COLUMN GZRERRL.GZRERRL_TIMESTAMP IS
+'Timestamp of the logged event.  Should not ever be updated.';
+COMMENT ON COLUMN GZRERRL.GZRERRL_ERROR IS
+'SQL error code thrown.';
+COMMENT ON COLUMN GZRERRL.GZRERRL_MESSAGE IS
+'SQL error message thrown.';
+COMMENT ON COLUMN GZRERRL.GZRERRL_TRACE IS
+'SQL trace from DBMS_UTILITY showing execution path of exception.';
+COMMENT ON COLUMN GZRERRL.GZRERRL_ADDITIONAL_INFO IS
+'Any additional info passed to the logger by the application for context of error.';
+COMMENT ON COLUMN GZRERRL.GZRERRL_STATUS IS
+'Status of the error.  Default value of NEW.  Current other values are ACKNOWLEDGED and RESOLVED.';
+--
 GRANT SELECT, INSERT, UPDATE, DELETE ON GZRERRL TO USR_INFOSERV;
 GRANT SELECT, INSERT, UPDATE, DELETE ON GZRERRL TO ALBINST;
 
