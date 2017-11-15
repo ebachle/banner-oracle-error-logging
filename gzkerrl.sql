@@ -90,6 +90,11 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
     p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
   );
 --
+  PROCEDURE p_mark_resolved(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
+  );
+--
 END GZKERRL;
 /
 SHOW ERRORS;
