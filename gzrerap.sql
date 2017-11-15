@@ -26,7 +26,14 @@ CREATE TABLE GZRERAP
 );
 CREATE INDEX GZRERAP_MAIN_INDEX
 	ON GZRERAP (GZRERAP_APPLICATION);
-COMMENT ON TABLE GZRERAP IS 'Logged applications table for Albion processes.';
+--
+COMMENT ON TABLE GZRERAP IS
+'Logged applications table for Albion processes.';
+COMMENT ON COLUMN GZRERAP.GZRERAP_APPLICATION IS
+'Application is a key field for the error log associated with top-level processes.';
+COMMENT ON COLUMN GZRERAP.GZRERAP_DESC IS
+'High-level description of each application and its role.';
+--
 GRANT SELECT, INSERT, UPDATE, DELETE ON GZRERAP TO USR_INFOSERV;
 GRANT SELECT, INSERT, UPDATE, DELETE ON GZRERAP TO ALBINST;
 
