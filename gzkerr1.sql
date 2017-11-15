@@ -85,6 +85,55 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       gb_common.p_set_context(C_PACKAGE, C_ACTION, p_context, 'N');
     END p_set_log_action_context;
 --
+  PROCEDURE p_write_error_log(
+    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT 'UNDEFINED',
+    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT 'UNDEFINED',
+    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT 'UNDEFINED',
+    p_error gzrerrl.gzrerrl_error%TYPE,
+    p_message gzrerrl.gzrerrl_message%TYPE,
+    p_trace gzrerrl.gzrerrl_trace%TYPE,
+    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE
+  ) IS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+    v_user_id CONSTANT GZRERRL.GZRERRL_USER_ID%TYPE := GB_COMMON.F_SCT_USER();
+    v_data_origin CONSTANT GZRERRL.GZRERRL_DATA_ORIGIN%TYPE := 'GZKERRL Error Logger';
+    BEGIN
+      INSERT INTO GZRERRL (
+        GZRERRL_APPLICATION
+        , GZRERRL_PROCESS
+        , GZRERRL_ACTION
+        , GZRERRL_TIMESTAMP
+        , GZRERRL_ERROR
+        , GZRERRL_MESSAGE
+        , GZRERRL_TRACE
+        , GZRERRL_ADDITIONAL_INFO
+        , GZRERRL_USER_ID
+        , GZRERRL_DATA_ORIGIN
+        , GZRERRL_ACTIVITY_DATE
+      )
+      VALUES (
+        p_application
+        , p_process
+        , p_action
+        , SYSDATE
+        , p_error
+        , p_message
+        , p_trace
+        , p_additional_info
+        , v_user_id
+        , v_data_origin
+        , SYSDATE
+      );
+      gb_common.P_COMMIT();
+      EXCEPTION
+      WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('Failed to insert into GZRERRL table.');
+      RAISE_APPLICATION_ERROR(
+        gb_common_strings.err_code,
+        'Failed to insert into GZRERRL table.' || SQLCODE || ' - ' || SQLERRM
+      );
+    END p_write_error_log;
+--
   PROCEDURE p_log_errors(
     p_error gzrerrl.gzrerrl_error%TYPE DEFAULT SQLCODE,
     p_message gzrerrl.gzrerrl_message%TYPE DEFAULT DBMS_UTILITY.FORMAT_ERROR_STACK,
@@ -142,100 +191,6 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       END LOOP;
     END p_log_errors;
 --
-  PROCEDURE p_write_error_log(
-    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT 'UNDEFINED',
-    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT 'UNDEFINED',
-    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT 'UNDEFINED',
-    p_error gzrerrl.gzrerrl_error%TYPE,
-    p_message gzrerrl.gzrerrl_message%TYPE,
-    p_trace gzrerrl.gzrerrl_trace%TYPE,
-    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE
-  ) IS
-  PRAGMA AUTONOMOUS_TRANSACTION;
-    v_user_id CONSTANT GZRERRL.GZRERRL_USER_ID%TYPE := GB_COMMON.F_SCT_USER();
-    v_data_origin CONSTANT GZRERRL.GZRERRL_DATA_ORIGIN%TYPE := 'GZKERRL Error Logger';
-    BEGIN
-      INSERT INTO GZRERRL (
-        GZRERRL_APPLICATION
-        , GZRERRL_PROCESS
-        , GZRERRL_ACTION
-        , GZRERRL_TIMESTAMP
-        , GZRERRL_ERROR
-        , GZRERRL_MESSAGE
-        , GZRERRL_TRACE
-        , GZRERRL_ADDITIONAL_INFO
-        , GZRERRL_USER_ID
-        , GZRERRL_DATA_ORIGIN
-        , GZRERRL_ACTIVITY_DATE
-      )
-      VALUES (
-        p_application
-        , p_process
-        , p_action
-        , SYSDATE
-        , p_error
-        , p_message
-        , p_trace
-        , p_additional_info
-        , v_user_id
-        , v_data_origin
-        , SYSDATE
-      );
-      gb_common.P_COMMIT();
-      EXCEPTION
-      WHEN OTHERS THEN
-      DBMS_OUTPUT.PUT_LINE('Failed to insert into GZRERRL table.');
-      RAISE_APPLICATION_ERROR(
-        gb_common_strings.err_code,
-        'Failed to insert into GZRERRL table.' || SQLCODE || ' - ' || SQLERRM
-      );
-    END p_write_error_log;
---
-  PROCEDURE p_mark_new(
-    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
-    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
-  )
-  IS
-    v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_NEW;
-
-    BEGIN
-      p_update_status(
-        p_id => p_id,
-        p_status => v_status,
-        p_user_id => p_user_id
-      );
-    END p_mark_new;
---
-  PROCEDURE p_mark_acknowledged(
-    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
-    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
-  )
-  IS
-    v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_ACKNOWLEDGED;
-
-    BEGIN
-      p_update_status(
-        p_id => p_id,
-        p_status => v_status,
-        p_user_id => p_user_id
-      );
-    END p_mark_acknowledged;
---
-  PROCEDURE p_mark_resolved(
-    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
-    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
-  )
-  IS
-    v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_RESOLVED;
-
-    BEGIN
-      p_update_status(
-        p_id => p_id,
-        p_status => v_status,
-        p_user_id => p_user_id
-      );
-    END p_mark_resolved;
---
   PROCEDURE p_update_status(
     p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
     p_status gzrerrl.gzrerrl_status%TYPE,
@@ -251,6 +206,51 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       WHERE
         GZRERRL_SURROGATE_ID = p_id;
     END p_update_status;
+--
+  PROCEDURE p_mark_new(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
+  )
+  IS
+    v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_NEW;
+--
+    BEGIN
+      p_update_status(
+        p_id => p_id,
+        p_status => v_status,
+        p_user_id => p_user_id
+      );
+    END p_mark_new;
+--
+  PROCEDURE p_mark_acknowledged(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
+  )
+  IS
+    v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_ACKNOWLEDGED;
+--
+    BEGIN
+      p_update_status(
+        p_id => p_id,
+        p_status => v_status,
+        p_user_id => p_user_id
+      );
+    END p_mark_acknowledged;
+--
+  PROCEDURE p_mark_resolved(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
+  )
+  IS
+    v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_RESOLVED;
+--
+    BEGIN
+      p_update_status(
+        p_id => p_id,
+        p_status => v_status,
+        p_user_id => p_user_id
+      );
+    END p_mark_resolved;
 --
 END GZKERRL;
 /
