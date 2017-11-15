@@ -206,6 +206,21 @@ CREATE OR REPLACE PACKAGE BODY GZKERRL AS
       );
     END p_mark_new;
 --
+  PROCEDURE p_mark_acknowledged(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
+  )
+  IS
+    v_status CONSTANT gzrerrl.gzrerrl_status%TYPE := C_STATUS_ACKNOWLEDGED;
+
+    BEGIN
+      p_update_status(
+        p_id => p_id,
+        p_status => v_status,
+        p_user_id => p_user_id
+      );
+    END p_mark_acknowledged;
+--
   PROCEDURE p_update_status(
     p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
     p_status gzrerrl.gzrerrl_status%TYPE,
