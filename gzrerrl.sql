@@ -21,6 +21,8 @@
 -- AUDIT TRAIL: 8.9.3
 -- 1. ENB 11/15/2017
 --    Added column comments.
+-- 2. ENB 11/15/2017
+--    Revoked grants to USR_INFOSERV to prevent log tampering.
 --
 -- AUDIT TRAIL END
 --
