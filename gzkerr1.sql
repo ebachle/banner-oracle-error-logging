@@ -25,6 +25,13 @@
 -- 5. ENB 6/1/2017
 --    Altered default types of logging context setters.
 --    This should prevent strings of an unacceptable length from being set.
+--
+-- AUDIT TRAIL: 8.9.3
+-- 1. ENB 11/15/2017
+--    Moved private DML procedures to be forward declared.
+-- 2. ENB 11/15/2017
+--    Added procedures to update the statues to different options.
+--
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE BODY GZKERRL AS

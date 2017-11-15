@@ -19,6 +19,16 @@
 -- 4. ENB 6/1/2017
 --    Altered default types of logging context setters.
 --    This should prevent strings of an unacceptable length from being set.
+--
+-- AUDIT TRAIL: 8.9.3
+-- 1. ENB 11/15/2017
+--    Added constants to abstract log event states.
+-- 2. ENB 11/15/2017
+--    Added public procedures to update the statues to different options.
+--    DML procedure is private in the package body.
+-- 3. ENB 11/15/2017
+--    Moved DML procedure p_write_log to private package method.
+--
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE GZKERRL AS

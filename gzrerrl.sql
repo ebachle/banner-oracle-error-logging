@@ -21,6 +21,8 @@
 -- AUDIT TRAIL: 8.9.3
 -- 1. ENB 11/15/2017
 --    Added column comments.
+-- 2. ENB 11/15/2017
+--    Revoked grants to USR_INFOSERV to prevent log tampering.
 --
 -- AUDIT TRAIL END
 --
@@ -73,9 +75,8 @@ COMMENT ON COLUMN GZRERRL.GZRERRL_ADDITIONAL_INFO IS
 COMMENT ON COLUMN GZRERRL.GZRERRL_STATUS IS
 'Status of the error.  Default value of NEW.  Current other values are ACKNOWLEDGED and RESOLVED.';
 --
-GRANT SELECT, INSERT, UPDATE, DELETE ON GZRERRL TO USR_INFOSERV;
 GRANT SELECT, INSERT, UPDATE, DELETE ON GZRERRL TO ALBINST;
-
+--
 BEGIN
 	dbeu_owner.dbeu_util.teardown_table(gb_common.f_sct_user(), 'GZRERRL');
 	dbeu_owner.dbeu_util.process_table(gb_common.f_sct_user(), 'GZRERRL');
@@ -83,8 +84,9 @@ BEGIN
 	dbeu_owner.dbeu_util.extend_table(gb_common.f_sct_user(), 'GZRERRL', 'G', FALSE);
 END;
 /
-
+--
 WHENEVER SQLERROR CONTINUE;
 DROP PUBLIC SYNONYM gzrerrl;
 WHENEVER SQLERROR EXIT ROLLBACK;
 CREATE PUBLIC SYNONYM gzrerrl FOR gzrerrl;
+--
