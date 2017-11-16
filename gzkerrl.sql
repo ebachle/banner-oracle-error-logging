@@ -19,6 +19,16 @@
 -- 4. ENB 6/1/2017
 --    Altered default types of logging context setters.
 --    This should prevent strings of an unacceptable length from being set.
+--
+-- AUDIT TRAIL: 8.9.3
+-- 1. ENB 11/15/2017
+--    Added constants to abstract log event states.
+-- 2. ENB 11/15/2017
+--    Added public procedures to update the statues to different options.
+--    DML procedure is private in the package body.
+-- 3. ENB 11/15/2017
+--    Moved DML procedure p_write_log to private package method.
+--
 -- AUDIT TRAIL END
 --
 CREATE OR REPLACE PACKAGE GZKERRL AS
@@ -43,6 +53,10 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
   C_APPLICATION        CONSTANT VARCHAR2(100) := 'APPLICATION';
   C_PROCESS            CONSTANT VARCHAR2(100) := 'PROCESS';
   C_ACTION             CONSTANT VARCHAR2(100) := 'ACTION';
+--
+  C_STATUS_NEW CONSTANT gzrerrl.gzrerrl_status%TYPE := 'NEW';
+  C_STATUS_ACKNOWLEDGED CONSTANT gzrerrl.gzrerrl_status%TYPE := 'ACKNOWLEDGED';
+  C_STATUS_RESOLVED CONSTANT gzrerrl.gzrerrl_status%TYPE := 'RESOLVED';
 --
 -- Functions
 --
@@ -76,14 +90,19 @@ CREATE OR REPLACE PACKAGE GZKERRL AS
     p_additional_info gzrerrl.gzrerrl_additional_info%TYPE DEFAULT NULL
   );
 --
-  PROCEDURE p_write_error_log(
-    p_application gzrerrl.gzrerrl_application%TYPE DEFAULT 'UNDEFINED',
-    p_process gzrerrl.gzrerrl_process%TYPE DEFAULT 'UNDEFINED',
-    p_action gzrerrl.gzrerrl_action%TYPE DEFAULT 'UNDEFINED',
-    p_error gzrerrl.gzrerrl_error%TYPE,
-    p_message gzrerrl.gzrerrl_message%TYPE,
-    p_trace gzrerrl.gzrerrl_trace%TYPE,
-    p_additional_info gzrerrl.gzrerrl_additional_info%TYPE
+  PROCEDURE p_mark_new(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
+  );
+--
+  PROCEDURE p_mark_acknowledged(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
+  );
+--
+  PROCEDURE p_mark_resolved(
+    p_id gzrerrl.gzrerrl_surrogate_id%TYPE,
+    p_user_id gzrerrl.gzrerrl_user_id%TYPE DEFAULT gb_common.f_sct_user
   );
 --
 END GZKERRL;
