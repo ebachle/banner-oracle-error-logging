@@ -2,14 +2,18 @@
 -- Create Table
 -- gzrerap.sql
 --
--- AUDIT TRAIL: 8.9.3                    INIT    DATE
--- 1. Create new table GZRERAP           ENB     11/15/2017
+-- AUDIT TRAIL: 8.9.3
+-- 1. Create new table GZRERAP. ENB 11/15/2017
 --    Created to store application names for which error logging is enabled.
 --    This will allow for applications in GZRERRL not in this table to be an 
 --    implicit list of "unhandled" exception applications.
 --    Applications should be added to this table once they've got a scheduled
 --    report delivering the logs to an application admin.
 -- 
+-- AUDIT TRAIL: 8.9.4
+-- 1. Migrated to Primary Key. ENB 1/3/18
+--    Converted main index to being a unique primary key for the table.
+--
 -- AUDIT TRAIL END
 --
 DROP TABLE GZRERAP;
@@ -25,8 +29,8 @@ CREATE TABLE GZRERAP
 	-- 	GZRERAP_DATA_ORIGIN VARCHAR2(30),
 	-- 	GZRERAP_VPDI_CODE VARCHAR2(6)
 );
-CREATE INDEX GZRERAP_MAIN_INDEX
-	ON GZRERAP (GZRERAP_APPLICATION);
+--
+ALTER TABLE GZRERAP ADD CONSTRAINT GZRERAP_PK PRIMARY KEY (GZRERAP_APPLICATION);
 --
 COMMENT ON TABLE GZRERAP IS
 'Logged applications table for Albion processes.';
