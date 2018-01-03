@@ -2,8 +2,8 @@
 -- Create Table
 -- gzrerap.sql
 --
--- AUDIT TRAIL: 8.9.3                    INIT    DATE
--- 1. Create new table GZRERAP           ENB     11/15/2017
+-- AUDIT TRAIL: 8.9.3
+-- 1. Create new table GZRERAP. ENB 11/15/2017
 --    Created to store application names for which error logging is enabled.
 --    This will allow for applications in GZRERRL not in this table to be an 
 --    implicit list of "unhandled" exception applications.
